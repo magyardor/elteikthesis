@@ -1,8 +1,87 @@
 \chapter{Fejlesztői dokumentáció} % Developer guide
 \label{ch:impl}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nibh leo, dapibus in elementum nec, aliquet id sem. Suspendisse potenti. Nullam sit amet consectetur nibh. Donec scelerisque varius turpis at tincidunt.
+\section{Feladat specifikáció}
+Az webalkalmazás egy Single Page Applikáció (SPA), aminek a célja egy működő webáruház bemutatása Angular keretrendszerben. Az alkalmazás két főrészre osztható kliensoldali (front-end) és egy szerveroldali (back-end) részre. A kliensoldal feladata, hogy a felhasználó által látott UI/UX megjelenítést biztosítsa, amíg a szerveroldal felel a business logikáért, továbbá az adatok feldolgozásáért és autentikációjáért.
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth,height=250px]{images/alkalmazas_bemutatasa.png}
+	\caption{Az alkalmazás bemutatása}
+	\label{fig.picture-1}
+\end{figure}
+
+A 3.1-es ábrán látható a két oldal kommunikációs kapcsolata. A front-end pontosabban mondva a kliensoldal Angular keretrendszerben TypeScript segítségével íródott. A front-end kommunikációja úgynevezett requestekkel kérésekkel (json típusú adattovábbítással) történik amire a szerver oldal responsokkal egyszóval válaszokkal felel. A back-end NodeJS szoftverrendszer alapú, ami Express segítségével íródott. Az adatok tárolásáért a MongoDB felel.
+
+\section{Webalkalmazás radikális bemutatása}
+
+\subsection{Kliensoldalon használt technológiák bemutatása}
+
+\subsection{Kliensoldal működése}
+
+\subsection{Szerveroldal használt technológiák bemutatása}
+
+A következő fejezetben szeretném kifejteni a webáruház szerveroldali felépítését és működését. A 3.1-es ábrában felsorolt technológiákat részletesebben is bemutatni további ábrák segítségével.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth,height=220px]{images/nodejs_bemutatasa.png}
+	\caption{NodeJS bemutatása}
+	\label{fig.picture-3}
+\end{figure}
+
+A webáruház szerveroldala 14.15.4-es verziójú Node.js szoftverrendszert használ. A 3.2-es ábrán olvasható, hogy a Node.js skálázható internetes alkalmazások úgynevezett webszerverek készítésére alkalmas rendszer. A Node.js fogadja a kliensoldalról érkező kéréseket (requests) és válaszokat (responses) küld neki vissza.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth,height=220px]{images/express_bemutatasa.png}
+	\caption{Express bemutatása}
+	\label{fig.picture-4}
+\end{figure}
+
+Express leírása
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth,height=220px]{images/mongodb_bemutatasa.png}
+	\caption{mongoDB bemutatása}
+	\label{fig.picture-5}
+\end{figure}
+
+Adatbázis leírása:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth,height=220px]{images/nosql_bemutatasa.png}
+	\caption{NoSQL vs SQL adatbázisok összehasonlítása}
+	\label{fig.picture-6}
+\end{figure}
+
+miért a mongodb előny hátrány?
+
+\subsection{Szerveroldal működése}
+
+restapi leírása:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth,height=220px]{images/restapi_bemutatasa.png}
+	\caption{Adatkezelés}
+	\label{fig.picture-7}
+\end{figure}
+
+RESTAPI bemutatasa:
+
+Alkalmazás admin felület védelem
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth,height=220px]{images/hitelesites_bemutatasa.png}
+	\caption{Autentikáció}
+	\label{fig.picture-8}
+\end{figure}
+
+Hitelesítés
 
 \section{Tételek, definíciók, megjegyzések} % Theorem-like items
 

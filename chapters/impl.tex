@@ -2,7 +2,7 @@
 \label{ch:impl}
 
 \section{Feladat specifikáció}
-Az webalkalmazás egy Single Page Applikáció (SPA), aminek a célja egy működő webáruház bemutatása Angular keretrendszerben. Az alkalmazás két főrészre osztható kliensoldali (front-end) és egy szerveroldali (back-end) részre. A kliensoldal feladata, hogy a felhasználó által látott UI/UX megjelenítést biztosítsa, amíg a szerveroldal felel a business logikáért, továbbá az adatok feldolgozásáért és autentikációjáért.
+Az webalkalmazás célja egy működő webáruház bemutatása Angular keretrendszerben. Az alkalmazás két főrészre osztható kliensoldali (front-end) és egy szerveroldali (back-end) részre. A kliensoldal feladata a felhasználó által látott UI/UX megjelenítést biztosítsa. Amíg a szerveroldal felel a business logikáért, továbbá az adatok feldolgozásáért és hitelesítéséért.
 
 \begin{figure}[H]
 	\centering
@@ -11,17 +11,17 @@ Az webalkalmazás egy Single Page Applikáció (SPA), aminek a célja egy műkö
 	\label{fig.picture-1}
 \end{figure}
 
-A 3.1-es ábrán látható a két oldal kommunikációs kapcsolata. A front-end pontosabban mondva a kliensoldal Angular keretrendszerben TypeScript segítségével íródott. A front-end kommunikációja úgynevezett requestekkel kérésekkel (json típusú adattovábbítással) történik amire a szerver oldal responsokkal egyszóval válaszokkal felel. A back-end NodeJS szoftverrendszer alapú, ami Express segítségével íródott. Az adatok tárolásáért a MongoDB felel.
+A 3.1-es ábrán látható a két oldal kommunikációs kapcsolata. A front-end pontosabban mondva a kliensoldal Angular keretrendszerben TypeScript segítségével íródott. A front-end kommunikációja úgynevezett requestekkel más néven kérésekkel (json típusú adattovábbítással) történik amire a szerver oldal responsokkal egyszóval válaszokkal felel. A back-end NodeJS szoftverrendszer alapú, ami Express segítségével íródott. Az adatok tárolásáért a MongoDB nevezetű adatbázis felel.
 
-\section{Webalkalmazás radikális bemutatása}
+\section{Webalkalmazás részletes bemutatása}
 
 \subsection{Kliensoldalon használt technológiák bemutatása}
 
 \subsection{Kliensoldal működése}
 
-\subsection{Szerveroldal használt technológiák bemutatása}
+\subsection{Szerveroldalon használt technológiák bemutatása}
 
-A következő fejezetben szeretném kifejteni a webáruház szerveroldali felépítését és működését. A 3.1-es ábrában felsorolt technológiákat részletesebben is bemutatni további ábrák segítségével.
+A következő fejezetben szeretném kifejteni a webáruház szerveroldali felépítését és az alkalmazásban használt technológiák működését. A 3.1-es ábrában felsorolt technológiákat részletesebben is szeretném bemutatni további grafikák segítségével.
 
 \begin{figure}[H]
 	\centering
@@ -30,25 +30,29 @@ A következő fejezetben szeretném kifejteni a webáruház szerveroldali felép
 	\label{fig.picture-3}
 \end{figure}
 
-A webáruház szerveroldala 14.15.4-es verziójú Node.js szoftverrendszert használ. A 3.2-es ábrán olvasható, hogy a Node.js skálázható internetes alkalmazások úgynevezett webszerverek készítésére alkalmas rendszer. A Node.js fogadja a kliensoldalról érkező kéréseket (requests) és válaszokat (responses) küld neki vissza.
+A webáruház back-end megírásánál 14.15.4-es verziójú Node.js szoftverrendszert használtam. A 3.2-es ábra látható a Node.js bemutatása, ami összefoglalja a szoftverrendszer fontosabb tulajdonságait. Az illusztráció első dobozában olvasható miszerint a Node.js skálázható webszerverek létrehozására alkalmas más szóval egy olyan rendszert tudunk létrehozni, ami több felhasználót képes egyidejűleg kiszolgálni. Továbbá JavaScript nyelv segítségével olyan programok írhatóak, amely a komponensek közötti esemény interakciókat tekinti alapul. Folytatólag a Node.js aszinkron tulajdonságával lehetővé teszi, hogy a kliensoldalról érkező kérések várakozási sorrendbe kerüljenek, ennek következtében a kliensoldal tovább folytathatja a feladatát. 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1.0\textwidth,height=220px]{images/express_bemutatasa.png}
+	\includegraphics[width=0.8\textwidth,height=220px]{images/express_bemutatasa.png}
 	\caption{Express bemutatása}
 	\label{fig.picture-4}
 \end{figure}
 
-Express leírása
+A szerveroldal áttekinthetőbb és olvashatóbb kódírás érdekében a webáruház fejlesztése során az Express 4.17.1-es verzióját használtam. Az Express egy webes keretrendszer a Node.js nehézség nélküli használatához. A 3.3-as ábrán látható az Express attribútumainak ismertetése. Az illusztráción felvetettem, hogy az Express egy Middleware-típusú rendszer következésképpen lehetővé teszi a mongoDB adatbázis szoftverhez való zavartalan kapcsolódást a Mongoose 6.0.12 verziójával kiegészítve, ami egy JavaScript-ben írt objektum-orientált programozási könyvtár.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1.0\textwidth,height=220px]{images/mongodb_bemutatasa.png}
+	\includegraphics[width=0.8\textwidth,height=220px]{images/mongodb_bemutatasa.png}
 	\caption{mongoDB bemutatása}
 	\label{fig.picture-5}
 \end{figure}
 
-Adatbázis leírása:
+\begin{description}
+	\item[A mongoDB]egy nyílt forráskódú, NoSQL adatbázisszerverek közé sorolt szoftver. A NoSQL magyarán Nem SQL típusú adatbázisrendszert jelent. Jellemzően nem rekordokat és táblázatokat tárolnak, hanem független dokumentumokat és gyűjteményeket archiválnak. Személyes véleményem szerint a 3.4-es illusztrációval alátámasztva egyik legfőbb pozitív tulajdonságának éreztem a alkalmazás írása során, hogy az adatok JSON formátumban képes tárolni. Következésképpen a request és response folyamatok egyszerűsített és gyors működését képes biztosítani, mindeközben lehetővé teszi a kliensoldalon megjelenítendő információk könnyebb feldolgozását. 
+\end{description}
+ 
+A következő grafikai ábrán szándékozom röviden bemutatni és összehasonlítani a Nem SQL és az SQL alapú adatbázisok jellegzetes tulajdonságaik szerint.
 
 \begin{figure}[H]
 	\centering
@@ -57,31 +61,54 @@ Adatbázis leírása:
 	\label{fig.picture-6}
 \end{figure}
 
-miért a mongodb előny hátrány?
+A NoSQL adatbázisszerverek jellemzői kulcsfontosságú szempontokat szolgált a webáruház megírásához.
 
 \subsection{Szerveroldal működése}
 
-restapi leírása:
+Ebben a fejezetben szeretném részletesen prezentálni a webalkalmazásom szerveroldali működését példának okáért milyen request és response hívások találhatóak a kódban, hogyan létesít kapcsolatot a webalkalmazás az adatbázissal...stb.
+
+\begin{description}
+	\item[A webáruház megírása során RESTful API-t] (feloldva: Representational State Transfer Application programming interface) magyarán reprezentáción alapuló állapotátvitel nevezetű architekturális módszert használtam. Az API-k segítségével a felhasználó számára elérhető az alkalmazással történő számos interakció.
+	
+	\item[Az alábbi illusztráción] szeretném bemutatni az általam használt REST API hívásokat, ennek okán a 3.6-os ábrán láthatók a programban megírt végpontok.
+\end{description}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1.0\textwidth,height=220px]{images/restapi_bemutatasa.png}
 	\caption{Adatkezelés}
-	\label{fig.picture-7}
-\end{figure}
-
-RESTAPI bemutatasa:
-
-Alkalmazás admin felület védelem
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=1.0\textwidth,height=220px]{images/hitelesites_bemutatasa.png}
-	\caption{Autentikáció}
 	\label{fig.picture-8}
 \end{figure}
 
-Hitelesítés
+ A grafikán megfigyelhető hat különböző végpont ami a auth, hírek, termékek, termékcsoportok, üzenetek és rendeléseket fejezi ki. Az illusztrációt figyelemmel kísérve identifikálható, hogy nem minden végpont rendelkezik ugyan azokkal a kérésekkel. Szemléltetésképp vegyük figyelembe a hírekhez vonatkozó responsokat amik a GET, POST, PATCH és DELETE függvények ezzel szemben a auth-hoz kizárólag POST függvény tartozik.
+
+\begin{description}
+	\item[A REST API]-t megismerve és ezt az információt felhasználva kívánom szemléltetni és alább bemutatni a következő grafikán miképpen éri el a felhasználó által kezdeményezett kérése az adatbázist.
+\end{description}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth,height=220px]{images/kapcsolat_szerver_bemutatas.png}
+	\caption{Kapcsolat a szerverrel}
+	\label{fig.picture-7}
+\end{figure}
+
+A fenti 3.7-es ábrán kifejezetten látható milyen sorrendben jut el az adatbázishoz a felhasználó által indított kérés és miképpen tér vissza hozzá.
+
+\begin{description}
+	\item[Az alkalmazás megírása során] akaratlagosan egy olyan webáruház létrehozása volt a végcélom, ami időszerű adatok kezelését tudja biztosítani. Következésképpen egy olyan felület megvalósítása gyakorlatban, amely nem igényel programozón keresztüli beavatkozást. Ennek okán a szakdolgozat tartalmaz egy adminisztrációs oldal, amely biztosítja az alkalmazásban dinamikusan megjelenő adatok aktualitását, továbbá a leadott rendelések vásárlók által elküldött üzenetek megjelenítésére is szolgál. Kifejezetten ennek a blokk védelmében került bele külön hitelesítési felület.
+\end{description}
+ 
+ Az alább található 3.8-as grafikán ez az engedélyezési folyamat ismertetése látható.
+ 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth,height=220px]{images/hitelesites_bemutatasa.png}
+	\caption{Hitelesítés}
+	\label{fig.picture-9}
+\end{figure}
+
+Az illusztráción ábrázolt hitelesítési folyamat a következőképpen történik. Az alkalmazás front-end-ről érkező GET/products kérésre engedélyezés nélkül kap választ a szervertől, mivel a webáruházban bejelentkezés hiányában is hozzáférhetővé kell tenni ezt az információt. Ezzel szemben a POST/products kérés nem következhet be hitelesítés nélkül. Tehát bejelentkezés során a szerver generál és LocalStorage-ba elment egy úgynevezett tokent, amit az új termék hozzáadás kérésnél ellenőriz. Mindent összevetve a POST kérés védve van a szükséges tokennel nem rendelkezőktől.
 
 \section{Tételek, definíciók, megjegyzések} % Theorem-like items
 
@@ -112,39 +139,39 @@ Aliquam vehicula luctus mi a pretium. Nulla quam neque, maximus nec velit in, al
 
 Ut sollicitudin tempus urna et mollis. Aliquam et aliquam turpis, sed fermentum mauris. Nulla eget ex diam. Donec eget tellus pharetra, semper neque eget, rutrum diam.
 
-\subsection{Egyenletek, matematika} % Equations, formulas
-
-Duis suscipit ipsum nec urna blandit, $2 + 2 = 4$ pellentesque vehicula quam fringilla. Vivamus euismod, lectus sit amet euismod viverra, dolor metus consequat sapien, ut hendrerit nisl nulla id nisi. Nam in leo eu quam sollicitudin semper a quis velit.
-
-$$a^2 + b^2 = c^2$$
-
-Phasellus mollis, elit sed convallis feugiat, dolor quam dapibus nibh, suscipit consectetur lacus risus quis sem. Vivamus scelerisque porta odio, vitae euismod dolor accumsan ut.
-
-In mathematica, identitatem Euleri (equation est scriptor vti etiam notum) sit aequalitatem Equation~\ref{eq:euler}:
-\begin{equation}\label{eq:euler}
-e^{i \times \pi} + 1 = 0
-\end{equation}
-
 
 \section{Forráskódok} % Source code samples
 
-Nulla sodales purus id mi consequat, eu venenatis odio pharetra. Cras a arcu quam. Suspendisse augue risus, pulvinar a turpis et, commodo aliquet turpis. Nulla aliquam scelerisque mi eget pharetra. Mauris sed posuere elit, ac lobortis metus. Proin lacinia sit amet diam sed auctor. Nam viverra orci id sapien sollicitudin, a aliquam lacus suscipit. Quisque ac tincidunt leo Code~\ref{src:cpp} and \ref{src:csharp}:
+\subsection{Kliensoldali forráskódok}
+Nulla sodales purus id mi consequat, eu venenatis odio pharetra. Cras a arcu quam. Suspendisse augue risus, pulvinar a turpis et, commodo aliquet turpis. Nulla aliquam scelerisque mi eget pharetra. Mauris sed posuere elit, ac lobortis metus. Proin lacinia sit amet diam sed auctor.
 
-\lstset{caption={Hello World in C++}, label=src:cpp}
-\begin{lstlisting}[language={C++}]
-#include <stdio>
+\subsection{Szerveroldali forráskódok}
+Alább található forráskódok a 3.2.4-es fejezetben már meg említett Express.js-ben írt egy-egy példa request végpontokat tartalmazza.
 
-int main() 
-{
-	int c;
-	std::cout << "Hello World!" << std::endl;
+POST/news~\ref{src:post} and \ref{src:csharp}:
 
-	std::cout << "Press any key to exit." << std::endl;
-	std::cin >> c;
-	
-	return 0;
-}
-\end{lstlisting}
+\lstset{caption={POST/news végpont}, label=src:post}
+%\begin{lstlisting}[language=javascript]
+%exports.postNews = (req, res, next) => {
+%	const url = req.protocol + "://" + req.get("host");
+%	const news = new News({
+%		title: req.body.title,
+%		description: req.body.description,
+%		imagePath: url + "/images/news/" + req.file.filename,
+%		startDate: req.body.startDate,
+%		endDate: req.body.endDate,
+%	});
+%	news.save().then(result => {
+%		res.status(201).json({
+%			message: "News added successfully",
+%			news: {
+%				...result,
+%				id: result._id
+%			}
+%		});
+%	});
+%}
+%\end{lstlisting}
 
 \lstset{caption={Hello World in C\#}, label=src:csharp}
 \begin{lstlisting}[language={[Sharp]C}]

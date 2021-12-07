@@ -230,12 +230,12 @@ Az alább található 3.8-as grafikán ez az engedélyezési folyamat elméleti 
 	\label{fig.picture-9}
 \end{figure}
 
-Az illusztráción ábrázolt hitelesítési folyamat a következőképpen történik. Az alkalmazás front-end-ről érkező GET/products kérésre engedélyezés nélkül kap választ a szervertől, mivel a webáruházban bejelentkezés hiányában is hozzáférhetővé kell tenni ezt az információt. Ezzel szemben a POST/products kérés nem következhet be hitelesítés nélkül. Tehát bejelentkezés során a szerver generál és LocalStorage-ba elment egy úgynevezett tokent, amit az új termék hozzáadás kérésnél ellenőriz.
+Az illusztráción ábrázolt hitelesítési folyamat a következőképpen történik. Az alkalmazás front-end-ről érkező GET/products kérésre engedélyezés nélkül kap választ a szervertől, mivel a webáruházban bejelentkezés hiányában is hozzáférhetővé kell tenni ezt az információt. Ezzel szemben a POST/products kérés nem következhet be hitelesítés nélkül. Tehát bejelentkezés során a szerver generál egy úgynevezett tokent és LocalStorage-ba elmenti, amit az új termék hozzáadás kérésnél ellenőriz. Az alkalmazásban ez a hitelesítési funkciót következőképpen valósul meg:
+
+Ennek a funkciónak létrehozásánál két kiegészítő package-et úgynevezett bcryptjs-t és jsonwebtoken-t használja a programkód. Az előbbi lehetőséget nyújt bizonyos adatok titkosítására (ilyen adat például a belépési jelszó), az utóbbi pedig bizonyos REST API kérések érvényesítésére alkalmas. Mikor létrehozásra kerül egy új felhasználó a bcrypt package egy úgynevezett hash metódusát hívja meg a program, aminek segítéségével az új felhasználó jelszava titkosítva kerül be az adatbázisba. Ennek oka az, hogy ha véletlenül sikerül egy idegennek belépnie az adatbázisba, akkor ne tudja megszerezni az adott felhasználók jelszavát. Viszont, ha titkosítva kerül be az adat, a későbbiekben belépésnél nem lehet ellenőrizni, hogy a megfelelő jelszó került-e beírásra. Erre a problémára szolgál megoldásképp a bcryptjs compare metódusának használata, aminek segítségével összehasonlításra kerül az adott felhasználó adatbázisban szereplő jelszava és a begépelt jelszó hashelt változata, mivel ha pont a megfelelő adat kerül beírásra akkor a titkosított információnak megegyezőnek kell lennie az adatbázisban található jelszóval. Sikeres bejelentkezésnél a szerveroldal generál egy tokent a jsonwebtoken package segítségével és minden olyan kérésnél amihez szükséges autentikáció, ellenőrzésre kerül ennek az érvényes tokennek a létezése. A programkódban generált tokenek hitelessége egy óráig él.
 
 \bigskip
-
-
-Mindent összevetve az adminisztrációs felület védve van a szükséges tokennel nem rendelkezőktől. A hitelesítési folyamatot leíró példakódok a 3.7-es Forráskódok, 3.7.2-es alfejezetben találhatók.
+Mindent összevetve az adminisztrációs felület védve van az illetéktelen felhasználók belépésétől és bizonyos funkciók végrehajtásától. A hitelesítési folyamatot leíró példakódok a 3.7-es Forráskódok, 3.7.2-es Szerveroldali forráskódok nevezetű alfejezetben találhatóak.
 
 \section{Fogalomtár, megjegyzések} % Theorem-like items
 
@@ -325,6 +325,11 @@ exports.postNews = (req, res, next) => {
 		}
 	}
 \end{lstlisting}
+
+Az alábbi forráskódok a 3.5.2-es alfejezetben kifejtett hitelesítési funkció kódbeli megvalósítása olvasható. Ezen programkódok részben Maximilian Schwarzmüller által írt kód felhasználásával történt.
+
+
+
 
 \subsection{Algoritmusok} % Algorithms
 

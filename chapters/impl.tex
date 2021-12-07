@@ -20,7 +20,7 @@ A következő blokkokban szeretném tételesen demonstrálni a fentebb említett
 \section{Kliensoldal működése}
 
 \section{Szerveroldalon használt technológiák bemutatása}
-A szerveroldalon használt (3.1-es blokkban már említésre kerülő) módszerek kiválasztásuk előtt kulcsfontosságú szempontjuknak tartottam, hogy az Angular keretrendszerhez megfelelő kompatibilitással rendelkezzenek és alkalmazni tudjam őket. A következő technológiák mind olyan szoftverek, frameworkök vagy szerverek amikhez számtalan monográfia elérhető az interneten, ezzel is egyszerűsítve a használatukat. A következő felsorolásban összefoglalásképpen összegyűjtöttem az alkalmazásban fellelhető általam használt szoftvereket és verziószámukat:
+A szerveroldalon használt (3.1-es blokkban már említésre kerülő) módszerek kiválasztásuk előtt kulcsfontosságú szempontjuknak tartottam, hogy az Angular keretrendszerhez megfelelő kompatibilitással rendelkezzenek és alkalmazni tudjam őket a szakdolgozat elkészítése során. A következő technológiák mind olyan szoftverek, frameworkök vagy szerverek amikhez számtalan monográfia elérhető az interneten, ezzel támogatva a későbbiekben létrehozott projekteket. A következő felsorolásban összefoglalásképpen összegyűjtöttem az alkalmazásban fellelhető általam használt szoftvereket és verziószámukat:
 
 \begin{itemize}
 	\item Node.js: 14.15.4
@@ -30,7 +30,7 @@ A szerveroldalon használt (3.1-es blokkban már említésre kerülő) módszere
 \end{itemize}
 
 \bigskip
-A fejezet további részében szeretném ismertetni a fentebb felsorolt technológiák jellegzetes tulajdonságaikat.
+A fejezet további részében szeretném ismertetni a fentebb felsorolt technológiák jellegzetes tulajdonságaikat, főbb jellemzőiket további ábrák segítségével.
 
 \subsection{Node.js szoftverrendszer}
 
@@ -98,7 +98,7 @@ Az alábbi illusztráción szeretném bemutatni az alkalmazásban használt REST
 	\label{fig.picture-8}
 \end{figure}
 
- A grafikán megfigyelhető hat különböző végpont ami az auth, hírek, termékek, termékcsoportok, üzenetek és rendeléseket fejezi ki. Az illusztrációt figyelemmel kísérve identifikálható, hogy nem minden végpont rendelkezik ugyan azokkal a kérésekkel. Szemléltetésképp vegyük figyelembe a hírekhez vonatkozó responsokat amik a GET, POST, PATCH és DELETE függvények, ezzel szemben a auth-hoz kizárólag POST függvény tartozik. Ennek kifejezetten egy oka van, mégpedig az, hogy a webáruház egyes adatait nem szükséges módosítani tudni kliens oldalról.
+ A grafikán megfigyelhető hét különböző végpont ami az auth, hírek, termékek, termékcsoportok, üzenetek, chatek és rendeléseket fejezi ki. Az illusztrációt figyelemmel kísérve identifikálható, hogy nem minden végpont rendelkezik ugyan azokkal a kérésekkel. Szemléltetésképp vegyük figyelembe a hírekhez vonatkozó responsokat amik a GET, POST, PATCH és DELETE függvények, ezzel szemben a auth-hoz kizárólag POST függvény tartozik. Ennek kifejezetten egy oka van, mégpedig az, hogy a webáruház egyes adatait nem szükséges módosítani tudni kliens oldalról.
 
 \bigskip
 A REST API-t megismerve és ezt az információt felhasználva szemléltethető és az alább ábrán látható miképpen éri el a felhasználó által kezdeményezett kérés az adatbázist és hogyan kerül válaszra.
@@ -110,23 +110,118 @@ A REST API-t megismerve és ezt az információt felhasználva szemléltethető 
 	\label{fig.picture-7}
 \end{figure}
 
-A fenti 3.7-es ábrán kifejezetten látható milyen sorrendben jut el az adatbázishoz a felhasználó által indított kérés és miképpen tér vissza hozzá. Ennek lépései a következők:
+A fenti 3.7-es ábrával és az alább található alkalmazásban szereplő kódsorok segítségével szeretném bemutatni, hogy a felhasználó által indított kérés milyen sorrendben jut el az adatbázishoz és miképpen tér vissza hozzá.
 
-\begin{enumerate}
-	\item\label{step:first} Felhasználó interakcióba lép a felülettel (például: egy gombra kattintva).
-	\item A felületen függvény hívás segítségével kapcsolatot érünk el a front-enden megírt service fájllal.
-	\item A service fájlban található HttpClient Angular package segítségével a megadott útvonalon eljut az üzenet a back-end-en egy javascript fájlban fellelhető függvényhez.
-	\item A függvény Mongoose sémát használva elküldi az adott kérést a MongoDB-nek
-	\item Ezután az indított kérésnek megfelelően visszaküldi a válaszát. 
-\end{enumerate}
+\bigskip
+Felhasználó interakcióba lép a felülettel (például: egy gombra kattintva~\ref{src:html}-es forráskód), ennek következményeként meghívódik egy a gombhoz tartozó TypeScript nyelven írt függvény \ref{src:ts}-es forráskód.
 
-A webalkalmazásban szereplő REST API hívásokat tartalmazó példakódsorokat a  3.7-es Forráskódok 3.7.2-es alfejezetben találhatóak.
+\lstset{caption={Felhasználói interakció - HTML fájl}, label=src:html}
+\begin{lstlisting}[language=html]
+	<form style="margin-top: 2rem;" [formGroup]="form" (submit)="onAddMessage()" *ngIf="!isLoading">
+	....
+	<button class="btn-secondary" type="submit" [disabled]="!confirmed.checked">
+		{{'GENERIC.ACTION.SEND' | translate}}
+	</button>
+\end{lstlisting}
+
+\lstset{caption={Interakció függvényhívás - TypeScript fájl}, label=src:ts}
+\begin{lstlisting}[language=JavaScript]
+	onAddMessage(): void {
+		if(this.form.invalid) {
+			this.alertService.warn('ALERT.WARN.INVALID_FORM');
+			this.form.markAllAsTouched();
+			this.isLoading = false;
+			return;
+		}
+		this.isLoading = true;
+		this.contactService.sendMessage(
+			this.form.value.firstName,
+			this.form.value.lastName,
+			this.form.value.email,
+			this.form.value.description,
+			this.form.value.image,
+		)
+		this.isLoading = false
+		this.form.reset();
+	}
+\end{lstlisting}
+
+Az előbb említett \ref{src:ts}-es forráskódban szereplő függvény átadja az adatokat a kliensoldalon található Service fájl sendMessage() nevezetű függvényének. Ez a fájl tartalmazza a következő \ref{src:service}-as forráskódban szereplő kódsort.
+
+\lstset{caption={HttpClient POST request - Service TypeScript fájl}, label=src:service}
+\begin{lstlisting}[language=JavaScript]
+	sendMessage(
+		firstName: string, 
+		lastName: string, 
+		email: string, 
+		description: string, 
+		image: File | string
+	){
+		const messagesData = new FormData();
+		messagesData.append("firstName", firstName);
+		messagesData.append("lastName", lastName);
+		messagesData.append("email", email);
+		messagesData.append("description", description);
+		messagesData.append("image", image, firstName);
+		this.http.post<{message: string, messages: Messages}>
+		(environment.apiUrl + "messages", messagesData)
+			.subscribe(responseData => {
+				const messages: Messages = {
+					id: responseData.messages.id,
+					firstName: firstName,
+					lastName: lastName,
+					email: email,
+					description: description,
+					imagePath: responseData.messages.imagePath,
+				};
+				this.messages.push(messages);
+				this.msgUpdate.next([...this.messages]);
+				this.alert.success('ALERT.SUCCESS.ADD');
+				this.router.navigate(["/contact"]);
+			}, error => {
+				this.alert.error(error.error.message);
+			});
+	}
+\end{lstlisting}
+
+Ebben a kódrészletben látható, ahogyan a kliens oldal HttpClient Angular package POST request segítségével a megadott útvonalon küld egy REST API kérést a szerveroldal felé.
+
+\bigskip
+A szerveroldal fogadja ezt a kérést és továbbítja a MongoDB felé. Az alábbi \ref{src:express}-es forráskódban Express - JavaScript nyelv segítségével megírt kódrészletben ez szerepel.
+
+\lstset{caption={Express POST végpont - JavaScript}, label=src:express}
+\begin{lstlisting}[language=JavaScript]
+	exports.postMessages = (req, res, next) => {
+		const url = req.protocol + "://" + req.get("host");
+		const msg = new Messages({
+			firstName: req.body.firstName,
+			lastName: req.body.lastName,
+			email: req.body.email,
+			description: req.body.description,
+			imagePath: url + "/images/messages/" + req.file.filename,
+		});
+		msg.save().then(result => {
+			res.status(201).json({
+				message: "Message added successfully",
+				messages: {
+					...result,
+					id: result._id
+				}
+			});
+		});
+	}
+\end{lstlisting}
+
+Kliensoldalon és Szerveroldalon egyaránt látható a felhasználó által elindított kérés státuszát tartalmazó információ. A front-end-en egy úgynevezett AlertService componens segítségével kap visszaigazolást az elindított kérés befejezéséről, míg a back-end-en az adatbázis felé elküldött kérés kódrészletében található ez az információ.
+
+\bigskip
+A webalkalmazásban szereplő további REST API hívásokat tartalmazó példakódsorokat a 3.7-es Forráskódok 3.7.2-es Szerveroldali forráskódok nevezetű alfejezetben találhatóak.
 
 \subsection{Hitelesítés - Admin felület védelme}
 Az alkalmazás megírása során akaratlagosan egy olyan webáruház létrehozása volt a végcélom, ami időszerű adatok kezelését tudja biztosítani. Következésképpen egy olyan felület megvalósítása gyakorlatban is, amely nem igényel programozón keresztüli beavatkozást. Ennek okán a szakdolgozat tartalmaz egy adminisztrációs oldalt, amely biztosítja a webalkalmazásban dinamikusan megjelenő adatok aktualitását, továbbá a leadott rendelések vásárlók által elküldött üzenetek megjelenítésére is szolgál. Kifejezetten ennek a blokk védelmében került bele külön hitelesítési felület.
 
 \bigskip
-Az alább található 3.8-as grafikán ez az engedélyezési folyamat ismertetése látható.
+Az alább található 3.8-as grafikán ez az engedélyezési folyamat elméleti működése látható.
  
 \begin{figure}[H]
 	\centering
@@ -135,7 +230,12 @@ Az alább található 3.8-as grafikán ez az engedélyezési folyamat ismerteté
 	\label{fig.picture-9}
 \end{figure}
 
-Az illusztráción ábrázolt hitelesítési folyamat a következőképpen történik. Az alkalmazás front-end-ről érkező GET/products kérésre engedélyezés nélkül kap választ a szervertől, mivel a webáruházban bejelentkezés hiányában is hozzáférhetővé kell tenni ezt az információt. Ezzel szemben a POST/products kérés nem következhet be hitelesítés nélkül. Tehát bejelentkezés során a szerver generál és LocalStorage-ba elment egy úgynevezett tokent, amit az új termék hozzáadás kérésnél ellenőriz. Mindent összevetve a POST kérés védve van a szükséges tokennel nem rendelkezőktől. A hitelesítési folyamatot leíró példakódok a 3.7-es Forráskódok, 3.7.2-es alfejezetben találhatók.
+Az illusztráción ábrázolt hitelesítési folyamat a következőképpen történik. Az alkalmazás front-end-ről érkező GET/products kérésre engedélyezés nélkül kap választ a szervertől, mivel a webáruházban bejelentkezés hiányában is hozzáférhetővé kell tenni ezt az információt. Ezzel szemben a POST/products kérés nem következhet be hitelesítés nélkül. Tehát bejelentkezés során a szerver generál és LocalStorage-ba elment egy úgynevezett tokent, amit az új termék hozzáadás kérésnél ellenőriz.
+
+\bigskip
+
+
+Mindent összevetve az adminisztrációs felület védve van a szükséges tokennel nem rendelkezőktől. A hitelesítési folyamatot leíró példakódok a 3.7-es Forráskódok, 3.7.2-es alfejezetben találhatók.
 
 \section{Fogalomtár, megjegyzések} % Theorem-like items
 

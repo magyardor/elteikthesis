@@ -79,6 +79,7 @@ A shared mappa tartalmazza azokat a komponenseket és angular kiegészítő csom
 	\item[Alert üzenetek] segítségével a felhasználó által elindított folyamatok állapotáról nyújthatunk információt.
 	\item[Nyelvválasztás] lehetőséget biztosít az oldalon található adatok többnyelvű megjelenítését.
 	\item[Vissza gomb és a go to top gomb] a nevéből kiindulva olyan gombok amiknek lehetőségével egyszerűbb használatot biztosít a felhasználók számára.
+	\item[Chatbot] animációval rendelkező beszélgetési felület, ami lehetőséget nyújt arra, hogy a felhasználó gyors információt szerezzen az adott szolgáltatásokkal kapcsolatban. A chatbot részletes bemutatása a 3.7-es fejezet Forráskódok 3.7.1-es Kliensoldali forráskódok alfejezetében található,
 \end{description}
 
 \subsection{Egyéb fájlok és mappák}
@@ -153,7 +154,7 @@ Mint a 3.5-ös ábrán megfigyelhető szempontok szerint egy webáruházban keze
 
 \section{Szerveroldal működése}
 
-Ebben a fejezetben részletesen prezentálom az alkalmazás szerveroldali működését példának okáért milyen request és response hívások találhatóak a kódban, hogyan létesít kapcsolatot a webalkalmazás az adatbázissal...stb., valamint külön kitérek az admin oldalon található hitelesítésére alkalmazott technikára is.
+Ebben a fejezetben részletesen prezentálom az alkalmazás szerveroldali működését példának okáért milyen request és response hívások találhatóak a kódban, hogyan létesít kapcsolatot a webalkalmazás az adatbázissal...stb., valamint külön kitérek az adminisztrációs oldalon található hitelesítésére alkalmazott technikára is.
 
 \subsection{RESTful API - Végpont tervek bemutatása}
 
@@ -289,7 +290,7 @@ Kliensoldalon és Szerveroldalon egyaránt látható a felhasználó által elin
 \bigskip
 A webalkalmazásban szereplő további REST API hívásokat tartalmazó példakódsorokat a 3.7-es Forráskódok 3.7.2-es Szerveroldali forráskódok nevezetű alfejezetben találhatóak.
 
-\subsection{Hitelesítés - Admin felület védelme}
+\subsection{Hitelesítés - Adminisztrációs felület védelme}
 Az alkalmazás megírása során akaratlagosan egy olyan webáruház létrehozása volt a végcélom, ami időszerű adatok kezelését tudja biztosítani. Következésképpen egy olyan felület megvalósítása gyakorlatban is, amely nem igényel programozón keresztüli beavatkozást. Ennek okán a szakdolgozat tartalmaz egy adminisztrációs oldalt, amely biztosítja a webalkalmazásban dinamikusan megjelenő adatok aktualitását, továbbá a leadott rendelések vásárlók által elküldött üzenetek megjelenítésére is szolgál. Kifejezetten ennek a blokk védelmében került bele külön hitelesítési felület.
 
 \bigskip
@@ -306,8 +307,7 @@ Az illusztráción ábrázolt hitelesítési folyamat a következőképpen tört
 
 Ennek a funkciónak létrehozásánál két kiegészítő package-et úgynevezett bcryptjs-t és jsonwebtoken-t használja a programkód. Az előbbi lehetőséget nyújt bizonyos adatok titkosítására (ilyen adat például a belépési jelszó), az utóbbi pedig bizonyos REST API kérések érvényesítésére alkalmas. Mikor létrehozásra kerül egy új felhasználó a bcrypt package egy úgynevezett hash metódusát hívja meg a program, aminek segítéségével az új felhasználó jelszava titkosítva kerül be az adatbázisba. Ennek oka az, hogy ha véletlenül sikerül egy idegennek belépnie az adatbázisba, akkor ne tudja megszerezni az adott felhasználók jelszavát. Viszont, ha titkosítva kerül be az adat, a későbbiekben belépésnél nem lehet ellenőrizni, hogy a megfelelő jelszó került-e beírásra. Erre a problémára szolgál megoldásképp a bcryptjs compare metódusának használata, aminek segítségével összehasonlításra kerül az adott felhasználó adatbázisban szereplő jelszava és a begépelt jelszó hashelt változata, mivel ha pont a megfelelő adat kerül beírásra akkor a titkosított információnak megegyezőnek kell lennie az adatbázisban található jelszóval. Sikeres bejelentkezésnél a szerveroldal generál egy tokent a jsonwebtoken package segítségével és minden olyan kérésnél amihez szükséges autentikáció, ellenőrzésre kerül ennek az érvényes tokennek a létezése. A programkódban generált tokenek hitelessége egy óráig él.
 
-\bigskip
-Mindent összevetve az adminisztrációs felület védve van az illetéktelen felhasználók belépésétől és bizonyos funkciók végrehajtásától. A hitelesítési folyamatot leíró példakódok a 3.7-es Forráskódok, 3.7.2-es Szerveroldali forráskódok nevezetű alfejezetben találhatóak.
+Mindent összevetve az adminisztrációs felület védve van az illetéktelen felhasználók belépésétől és bizonyos funkciók végrehajtásától.
 
 
 \section{Az alkalmazás megjelenése, web design} % Theorem-like items
@@ -350,96 +350,262 @@ A programkód kliensoldal elkészítése előtt készítettem pár oldalvázlato
 \section{Forráskódok} % Source code samples
 
 \subsection{Kliensoldali forráskódok}
-Nulla sodales purus id mi consequat, eu venenatis odio pharetra. Cras a arcu quam. Suspendisse augue risus, pulvinar a turpis et, commodo aliquet turpis. Nulla aliquam scelerisque mi eget pharetra. Mauris sed posuere elit, ac lobortis metus. Proin lacinia sit amet diam sed auctor.
+Ebben az alfejezetben található a kliensoldal működésénél említett chatbot bemutatása forráskódok segítségével. Ezt a funkciót úgy került megvalósításra, hogy előre megírt és adatbázisban eltárolt kérdéseket és válaszokat kérdezek le és jelenítek meg animációk segítségével. Az alábbi forráskódok ezt tartalmazzák.
+
+Először is lekérdezem és eltárolom ezt a chat listát a GET/chat~\ref{src:chat} forráskódban szereplő függvény  segítségével.
+
+\lstset{caption={GET/chat lista lekérés - TypeScript}, label=src:chat}
+\begin{lstlisting}[language=JavaScript]
+	async ngOnInit() {
+		await this.chat.getChat();
+		this.chatSub = this.chat.getUpdateListener()
+		.subscribe(chat => {
+			this.chatList = chat;
+		});
+	}
+\end{lstlisting}
+
+Ezután megjelenítem ebben a listában szereplő kérdéseket HTML fájlban a \ref{src:chatHTML} forráskódban látottak szerint. Ezek a kérdések linkként szolgálnak, amik átirányítanak a kérdés animált profil oldalára ami a \ref{src:chatProfile} forráskódban látható.
+\lstset{caption={Chatbot megjelenítése - HTML}, label=src:chatHTML}
+\begin{lstlisting}[language=html]
+	 <div class="chat-body">
+		<div class="chat-link" *ngFor="let chat of chatList">
+		<div (click)="loadChatProfile(chat.id)">{{chat.title}}</div>
+	</div>
+\end{lstlisting}
+
+\lstset{caption={Chatbot kérdéshez tatoró szöveg megjelenítése - HTML}, label=src:chatProfile}
+\begin{lstlisting}[language=html]
+	<div class="animated display-message">
+		<div class="chat__message chat__message_B" style="--delay: 2s">
+			<div class="chat__content">
+				{{selectedChat.title}}
+			</div>
+		</div>
+		<div class="chat__message chat__message_A" style="--delay: 6s">
+			<div class="chat__content">
+				{{selectedChat.description}}
+			</div>
+		</div>
+		...
+\end{lstlisting}
+
+A beszélgetés imitálásához scss-ben írt stílus fájlt használtam az alábbi \ref{src:scss} forráskódban leírtak alapján.
+
+\lstset{caption={Chatbot beszélgetés animáció - scss}, label=src:scss}
+\begin{lstlisting}
+.chat__message {
+	...
+	transform-origin: 0 100%;
+	padding-top: 0;
+	transform: scale(0);
+	...
+	animation: message 0.15s ease-out 0s forwards;
+	animation-delay: var(--delay);
+	--bgcolor: var(--info-color);
+	--radius: 8px 8px 8px 0;
+}
+
+.chat__message_B{
+	color: var(--light-color);
+	flex-direction: row-reverse;
+	text-align: right;
+	align-self: flex-end;
+	transform-origin: 100% 100%;
+	--bgcolor: var(--main-color);
+	--radius: 8px 8px 0 8px;
+}
+
+.chat__message::before {
+	content: "";
+	flex: 0 0 40px;
+	aspect-ratio: 1/1;
+	background: var(--bgcolor);
+	border-radius: 50%;
+}
+\end{lstlisting}
 
 \subsection{Szerveroldali forráskódok}
-Alább található forráskódok a 3.5.1-es fejezetben megemlített JavaScriptben írt egy-egy példa request végpontokat tartalmaz.
+Alább található forráskódok a 3.5.1-es fejezetben már (POST request segítségével) kifejtett JavaScriptben írt kérés mellett a többi példa lekérés látható. A programban használt végpontok, amik bemutatásra kerülnek a következők: GET, DELETE és PUT műveletek.
 
-POST/news~\ref{src:post} és a visszaérkező json fájl \ref{src:postJson}:
+GET/news~\ref{src:get} végpont és a visszaérkező json fájl \ref{src:getJson}:
 
-\lstset{caption={POST/news végpont}, label=src:post}
+\lstset{caption={GET/news végpont}, label=src:get}
 \begin{lstlisting}[language=JavaScript]
-exports.postNews = (req, res, next) => {
-	const url = req.protocol + "://" + req.get("host");
-	const news = new News({
-		title: req.body.title,
-		description: req.body.description,
-		imagePath: url + "/images/news/" + req.file.filename,
-		startDate: req.body.startDate,
-		endDate: req.body.endDate,
-	});
-	news.save().then(result => {
-		res.status(201).json({
-			message: "News added successfully",
-			news: {
-				...result,
-				id: result._id
-			}
+exports.getChat = (req, res, next) => {
+	Chat.find().then(result => {
+		res.status(200).json({
+			message: "Chat fetched successfully",
+			chat: result,
 		});
 	});
 }
 \end{lstlisting}
 
-\lstset{caption={POST/news JSON}, label=src:postJson}
+\lstset{caption={POST/news JSON}, label=src:getJson}
 \begin{lstlisting}[language={JSON}]
 {
-	"_id":
+	"message": "News fetched successfully!",
+	"news": [
 	{
-		"$oid":"618e7a2edd33576f6e96b11c"
-	},
-	"title":"Teszt",
-	"description":"Teszt szoveg",
-	"imagePath":"http://localhost:3000/images/news/teszt-1636727342360.jpg",
-	"startDate":
+		"_id": "616ece72537ef3531fde6d47",
+		"title": "New News",
+		"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+		"imagePath": "http://localhost:3000/images/news/new-news-1634651762652.jpg",
+		"__v": 0
+	}, ...
+	]
+}
+\end{lstlisting}
+
+PUT/news~\ref{src:put} végpont és a visszaérkező json fájl \ref{src:putJson}:
+
+\lstset{caption={PUT/news végpont}, label=src:put}
+\begin{lstlisting}[language=JavaScript]
+exports.putNews = (req, res, next) => {
+	let imagePath = req.body.imagePath;
+	if(req.file) {
+		const url = req.protocol + "://" + req.get("host");
+		imagePath = url + "/images/news/" + req.file.filename
+	}
+	const news = new News({
+		_id: req.body.id,
+		title: req.body.title,
+		description: req.body.description,
+		imagePath: imagePath,
+		startDate: req.body.startDate,
+		endDate: req.body.endDate,
+	});
+	News.updateOne({_id: req.params.id}, news).then(result => {
+		res.status(200).json(
+		{message: "Update succsessful!"}
+		);
+	});
+}
+\end{lstlisting}
+
+\lstset{caption={PUT/news JSON}, label=src:putJson}
+\begin{lstlisting}[language={JSON}]
+{
+	"message": "Update succsessful!",
+	"news": [
 	{
-		"$date":
-		{
-			"$numberLong":"1637276400000"
-		}
-	},
-	"endDate":
-	{
-		"$date":
-		{
-			"$numberLong":"1637881200000"
-		}
+		"_id": "616ece72537ef3531fde6d47",
+		"title": "New News",
+		"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+		"imagePath":"http://localhost:3000/images/news/new-news-1634651762652.jpg",
+		"__v": 0
+	}]
+}
+\end{lstlisting}
+
+DELETE/news~\ref{src:delete} végpont:
+
+\lstset{caption={DELETE/news végpont}, label=src:delete}
+\begin{lstlisting}[language=JavaScript]
+	exports.deleteNews = (req, res, next) => {
+		News.deleteOne({_id: req.params.id}).then( result => {
+			res.status(200).json({
+				message: "News deleted!"
+			});
+		});
 	}
 \end{lstlisting}
 
-Az alábbi forráskódok a 3.5.2-es alfejezetben kifejtett hitelesítési funkció kódbeli megvalósítása olvasható. Ezen programkódok részben Maximilian Schwarzmüller által írt kód felhasználásával történt.
 
+%\subsection{Algoritmusok} % Algorithms
 
+%A general Interval Branch and Bound algorithm is shown in Algorithm~\ref{alg:ibb}. One of the following selection rules is applied in Step \ref{step:selrule}.\\
+%Példa forrása: \href{https://www.inf.u-szeged.hu/actacybernetica/}{Acta Cybernetica (ez egy link)}.
 
-
-\subsection{Algoritmusok} % Algorithms
-
-A general Interval Branch and Bound algorithm is shown in Algorithm~\ref{alg:ibb}. One of the following selection rules is applied in Step \ref{step:selrule}.\\
-Példa forrása: \href{https://www.inf.u-szeged.hu/actacybernetica/}{Acta Cybernetica (ez egy link)}.
-
-\begin{algorithm}[H]
-\caption{A general interval B\&B algorithm} 
-\label{alg:ibb} 
-\textbf{\underline{Funct}} IBB($S,f$)
-\begin{algorithmic}[1] % sorszámok megjelenítése minden n. sor előtt, most n = 1
-\State Set the working list ${\cal L}_W$ := $\{S\}$ and the final list ${\cal L}_Q$ := $\{\}$     
-\While{( ${\cal L}_W \neq \emptyset$ )} \label{alg:igoend}
-	\State  Select an interval $X$ from ${\cal L}_W$ \label{step:selrule}\Comment{Selection rule}  
-	\State Compute $lbf(X)$ \Comment{Bounding rule}		  
-	\If{$X$ cannot be eliminated} \Comment{Elimination rule}
-		\State Divide $X$ into $X^j,\ j=1,\dots, p$, subintervals   \Comment{Division rule}
-		\For{$j=1,\ldots,p$}
-			\If{$X^j$ satisfies the termination criterion} \Comment{Termination rule}
-				\State Store $X^j$ in ${\cal L}_W$ 
-			\Else
-				\State Store $X^j$ in ${\cal L}_W$ 
-			\EndIf
-		\EndFor  
-	\EndIf
-\EndWhile
-\State \textbf{return} ${\cal L}_Q$
-\end{algorithmic}
-\end{algorithm}
+%\begin{algorithm}[H]
+%\caption{A general interval B\&B algorithm} 
+%\label{alg:ibb} 
+%\textbf{\underline{Funct}} IBB($S,f$)
+%\begin{algorithmic}[1] % sorszámok megjelenítése minden n. sor előtt, most n = 1
+%\State Set the working list ${\cal L}_W$ := $\{S\}$ and the final list ${\cal L}_Q$ := $\{\}$     
+%\While{( ${\cal L}_W \neq \emptyset$ )} \label{alg:igoend}
+	%\State  Select an interval $X$ from ${\cal L}_W$ \label{step:selrule}\Comment{Selection rule}  
+	%\State Compute $lbf(X)$ \Comment{Bounding rule}		  
+	%\If{$X$ cannot be eliminated} \Comment{Elimination rule}
+		%\State Divide $X$ into $X^j,\ j=1,\dots, p$, subintervals   \Comment{Division rule}
+		%\For{$j=1,\ldots,p$}
+			%\If{$X^j$ satisfies the termination criterion} \Comment{Termination rule}
+				%\State Store $X^j$ in ${\cal L}_W$ 
+			%\Else
+				%\State Store $X^j$ in ${\cal L}_W$ 
+			%\EndIf
+		%\EndFor  
+	%\EndIf
+%\EndWhile
+%\State \textbf{return} ${\cal L}_Q$
+%\end{algorithmic}
+%\end{algorithm}
 
 \section{Tesztesetek}
+Szerveroldal REST API kérések tesztelése Postman program segítségével. A táblázat első oszlopában a requestekre vonatkozó hitelesítési kötelezettségéről található információ. A második oszlopban a kérések URL címe olvasható, ezzel a címmel érhető el a back-end-en megírt request függvények.  A harmadik és negyedik oszlopban pedig a kérés végrehajtásáról nyújt információkat. Ilyen információ például az, hogy sikeres volt-e a művelet és milyen üzenet társul hozzá.
+
+\begin{table}[H]
+	\begin{tabular}{ | c | l | c | l | }
+		\hline
+		\multicolumn{4}{|c|}{\textbf{Szerveroldali végpontok tesztelése}}
+		\\ \hline
+		\hline
+		\multicolumn{4}{|c|}{\textbf{GET}} \\
+		\hline
+		\multicolumn{1}{| c |}{\textbf{ Token }} & \multicolumn{1}{ c |}{\textbf{Request URL}} & \multicolumn{1}{ c | }{\textbf{Status}} & \multicolumn{1}{ c | }{\textbf{Message}} \\
+		\hline		
+		nem & api/products & 200 OK & Products fetched successfully  \\
+		\hline
+		nem & api/productsGroups &200 OK & Group fetched successfully \\
+		\hline
+		nem & api/news & 200 OK & News fetched successfully \\
+		\hline
+		nem & api/chat & 200 OK & Chat fetched successfully  \\
+		\hline 
+		nem & api/messages & 401 Unauthorized & Auth failed  \\
+		\hline 
+		igen & api/messages & 200 OK & Message fetches successfully  \\
+		\hline
+		igen & api/orders & TBA & TBA \\
+		\hline
+		\multicolumn{4}{|c|}{\textbf{POST}} \\
+		\hline
+		\multicolumn{1}{| c |}{\textbf{ Token }} & \multicolumn{1}{| c |}{\textbf{Request URL}} & \multicolumn{1}{ c | }{\textbf{Status}} & \multicolumn{1}{ c | }{\textbf{Message}} \\
+		\hline
+		igen & api/products & 500 Server Error & Unexpected field \\
+		\hline
+		igen & api/news & TBA & TBA \\
+		\hline
+		nem & api/messages & TBA & TBA \\
+		\hline
+		nem & api/orders & TBA & TBA \\
+		\hline
+		\multicolumn{4}{|c|}{\textbf{PUT}} \\
+		\hline
+		\multicolumn{1}{| c |}{\textbf{ Token }} & \multicolumn{1}{| c |}{\textbf{Request URL}} & \multicolumn{1}{ c | }{\textbf{Status}} & \multicolumn{1}{ c | }{\textbf{Message}} \\
+		\hline
+		igen & api/products & 500 Server Error & Unexpected field \\
+		\hline
+		igen & api/news & TBA & TBA \\
+		\hline
+		\multicolumn{4}{|c|}{\textbf{DELETE}} \\
+		\hline
+		\multicolumn{1}{| c |}{\textbf{ Token }} & \multicolumn{1}{| c |}{\textbf{Request URL}} & \multicolumn{1}{ c | }{\textbf{Status}} & \multicolumn{1}{ c | }{\textbf{Message}} \\
+		\hline
+		igen & api/products/6186.. & 200 OK & Products deleted \\
+		\hline
+		igen & api/news/61ae.. & 200 OK & News deleted \\
+		\hline
+		igen & api/messages/61a4.. & 200 OK & Message deleted \\
+		\hline
+		igen & api/orders & TBA & TBA \\
+		\hline
+		
+	\end{tabular}
+	\caption[Szerveroldali végpontok tesztelése]{Back-end REST API kérés végpontok tesztelése.}
+	\label{tab:example-4}
+\end{table}
+
 
 \section{Továbbfejlesztési lehetőségek}

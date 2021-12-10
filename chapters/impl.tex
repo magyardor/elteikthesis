@@ -2,7 +2,7 @@
 \label{ch:impl}
 
 \section{Webalkalmazás specifikáció}
-Az alkalmazás fő célja egy olyan működő webáruház bemutatása, ami MEAN (MongoDB, Express.js, Angular, és Node.js - solution stack) nevezetű szoftverköteg segítségével készült. A MEAN  megoldásverem egy ingyenes nyílt forráskódú szoftverek halmaza, ami lehetőséget kínál dinamikus weboldalak készítésére. A webalkalmazás két főrészre osztható kliensoldali és szerveroldali (szakmai nyelven kifejezve: front-end és back-end) részre. A kliensoldal leglényegesebb feladata, hogy a felhasználó által is látott weboldalt megjelenítse grafikai UI/UX(rövidítés feloldása: User interface/User experience)dizájn implementálásával. Nevezetesen egy olyan rendszer, ami képes a felhasználó számára felületet és élményt biztosítani. Miközben a szerveroldal elsődleges feladata az alkalmazás úgynevezett business logikájának a megvalósítása. Ezen felül képes az adatok feldolgozására és hitelesítésére is. A következő ábrán szeretném reprezentálni milyen módon épül fel a webalkalmazás, továbbá megismertetni a két oldal kommunikációs kapcsolatát.
+Az alkalmazás fő célja egy olyan működő webáruház bemutatása, ami \citeauthor{MEAN} (MongoDB, Express.js, Angular, és Node.js - solution stack) nevezetű szoftverköteg segítségével készült. A \citeauthor{MEAN}  megoldásverem egy ingyenes nyílt forráskódú szoftverek halmaza, ami lehetőséget kínál dinamikus weboldalak készítésére. A webalkalmazás két főrészre osztható kliensoldali és szerveroldali (idegen nyelven: front-end és back-end) részre. A kliensoldal leglényegesebb feladata, hogy a felhasználó által is látott weboldalt megjelenítse grafikai UI/UX(rövidítés feloldása: User interface/User experience)dizájn implementálásával. Nevezetesen egy olyan rendszer, ami képes a felhasználó számára felületet és élményt biztosítani. Miközben a szerveroldal elsődleges feladata az alkalmazás úgynevezett business logikájának a megvalósítása. Ezen felül képes az adatok feldolgozására és hitelesítésére is. A következő ábrán szeretném reprezentálni milyen módon épül fel a webalkalmazás, továbbá megismertetni a két oldal kommunikációs kapcsolatát.
 
 \begin{figure}[H]
 	\centering
@@ -11,7 +11,7 @@ Az alkalmazás fő célja egy olyan működő webáruház bemutatása, ami MEAN 
 	\label{fig.picture-1}
 \end{figure}
 
-A 3.1-es ábrán látható a két oldal miképpen osztja meg az információkat egymás között. A front-end pontosabban mondva a kliensoldal Angular keretrendszerben TypeScript segítségével íródott. A front-end kommunikációja úgynevezett requestekkel más néven kérésekkel (json típusú adattovábbítással) a háttérben aszinkron módon történik amire a szerveroldal responsokkal egyszóval válaszokkal felel. A back-end Node.js szoftverrendszer alapú, ami Express segítségével íródott. Az adatok tárolásáért a MongoDB nevezetű adatbázis felel.
+A 3.1-es ábrán látható a két oldal miképpen osztja meg az információkat egymás között. A front-end pontosabban mondva a kliensoldal \citeauthor{Angular} keretrendszerben \citeauthor{TypeScript} segítségével íródott. A front-end kommunikációja úgynevezett requestekkel más néven kérésekkel (json típusú adattovábbítással) a háttérben aszinkron módon történik amire a szerveroldal responsokkal egyszóval válaszokkal felel. A back-end \citeauthor{Node.js} szoftverrendszer alapú, ami \citeauthor{Express} segítségével íródott. Az adatok tárolásáért a \citeauthor{MongoDB} nevezetű adatbázis felel.
 
 \bigskip
 A következő blokkokban szeretném tételesen demonstrálni a fentebb említett front-end és back-end oldalakon használt módszerek alkalmazását és működését. Ezen felül szándékomban áll ismertetni az általam alkalmazott szoftverek technikai tulajdonságaikat.
@@ -60,13 +60,13 @@ Ez a mappa tartalmazza az adminisztrációs oldal megjelenítéséhez szüksége
 \subsection{Pages mappa}
 A webalkalmazás összes olyan komponense található ebben a mappában, ami nem kapcsolódik hitelesítési funkció az eléréséhez. Az áruház öt fő oldala található meg itt.
 
-\begin{itemize}
+\begin{compactitem}
 	\item Főoldal/Kezdőlap: összefoglalja a hírek és a termékek oldalát
 	\item Hírek: az oldal üzemeltető által megosztott fontosabb információk
 	\item Termékek: minden olyan termék, amit eladásra szánnak
 	\item Rólunk: az oldal üzemeltetőjével kapcsolatos információk - kapcsolattartás
 	\item Bevásárlókosár:  a felhasználó által kiválasztott termékek
-\end{itemize}
+\end{compactitem}
 
 \subsection{Oldalak közötti navigáció}
 Az oldalak közötti koordinálást az előbbiekben kifejtett modul fájlok egyike kezeli. Angularban a legjobb mód az, hogy ha a routerbe betöltést és a konfigurálást különállóan történik. A konfigurálás az AppRoutingModuleban zajlik, míg a betöltés a legfelső szintű module azaz az AppModuleban van importálva, ami útválasztóként is szolgál.
@@ -95,12 +95,12 @@ Ebben a blokkban szerepel minden olyan mappa és fájl amit nem tudtam az előz�
 \section{Szerveroldalon használt technológiák bemutatása}
 A szerveroldalon használt (3.1-es blokkban már említésre kerülő) módszerek kiválasztásuk előtt kulcsfontosságú szempontjuknak tartottam, hogy az Angular keretrendszerhez megfelelő kompatibilitással rendelkezzenek és alkalmazni tudjam őket a szakdolgozat elkészítése során. A következő technológiák mind olyan szoftverek, frameworkök vagy szerverek amikhez számtalan monográfia elérhető az interneten, ezzel támogatva a későbbiekben létrehozott projekteket. A következő felsorolásban összefoglalásképpen összegyűjtöttem az alkalmazásban fellelhető általam használt szoftvereket és verziószámukat:
 
-\begin{itemize}
+\begin{compactitem}
 	\item Node.js: 14.15.4
 	\item Express.js: 4.17.1
 	\item Mongoose: 6.0.12
 	\item MongoDB Atlas
-\end{itemize}
+\end{compactitem}
 
 \bigskip
 A fejezet további részében szeretném ismertetni a fentebb felsorolt technológiák jellegzetes tulajdonságaikat, főbb jellemzőiket további ábrák segítségével.
@@ -543,6 +543,12 @@ DELETE/news~\ref{src:delete} végpont:
 %\end{algorithm}
 
 \section{Tesztesetek}
+
+\subsection{Kliensoldal tesztelése}
+TBA
+
+
+\subsection{Szerveroldal tesztelése}
 Szerveroldal REST API kérések tesztelése Postman program segítségével. A táblázat első oszlopában a requestekre vonatkozó hitelesítési kötelezettségéről található információ. A második oszlopban a kérések URL címe olvasható, ezzel a címmel érhető el a back-end-en megírt request függvények.  A harmadik és negyedik oszlopban pedig a kérés végrehajtásáról nyújt információkat. Ilyen információ például az, hogy sikeres volt-e a művelet és milyen üzenet társul hozzá.
 
 \begin{table}[H]

@@ -11,13 +11,13 @@ Az alkalmazás fő célja egy olyan működő webáruház bemutatása, ami \cite
 	\label{fig.picture-1}
 \end{figure}
 
-A 3.1-es ábrán látható a két oldal miképpen osztja meg az információkat egymás között. A front-end pontosabban mondva a kliensoldal \citeauthor{Angular} keretrendszerben \citeauthor{TypeScript} segítségével íródott. A front-end kommunikációja úgynevezett requestekkel más néven kérésekkel (json típusú adattovábbítással) a háttérben aszinkron módon történik amire a szerveroldal responsokkal egyszóval válaszokkal felel. A back-end \citeauthor{Node.js} szoftverrendszer alapú, ami \citeauthor{Express} segítségével íródott. Az adatok tárolásáért a \citeauthor{MongoDB} nevezetű adatbázis felel.
+A \ref{fig.picture-1}-es ábrán látható a két oldal miképpen osztja meg az információkat egymás között. A front-end pontosabban mondva a kliensoldal \citeauthor{Angular} keretrendszerben \citeauthor{TypeScript} segítségével íródott. A front-end kommunikációja úgynevezett requestekkel más néven kérésekkel (json típusú adattovábbítással) a háttérben aszinkron módon történik amire a szerveroldal responsokkal egyszóval válaszokkal felel. A back-end \citeauthor{Node.js} szoftverrendszer alapú, ami \citeauthor{Express} segítségével íródott. Az adatok tárolásáért a \citeauthor{MongoDB} nevezetű adatbázis felel.
 
 \bigskip
 A következő blokkokban szeretném tételesen demonstrálni a fentebb említett front-end és back-end oldalakon használt módszerek alkalmazását és működését. Ezen felül szándékomban áll ismertetni az általam alkalmazott szoftverek technikai tulajdonságaikat.
 
 \section{Kliensoldalon használt technológiák bemutatása}
-A dokumentáció és az egész program fő eleme az Angular keretrendszer használata, aminek a segítségével dinamikus webalkalmazások hozhatóak létre. Az Angular egy nyílt forráskódú a Google által fejlesztett JavaScript nyelven írt front-end keretrendszer. Ebben a fejezetben szeretném kellőképpen kifejteni miért ezt a rendszert választottam az alkalmazás megírásához ezen felül alaposabban bemutatni a működését és főbb tulajdonságait. 
+A dokumentáció és az egész program fő eleme az Angular keretrendszer használata, aminek a segítségével dinamikus webalkalmazások hozhatóak létre. Az Angular egy nyílt forráskódú a Google által fejlesztett JavaScript nyelven írt front-end keretrendszer. Ebben a fejezetben szeretném kellőképpen kifejteni miért ezt a rendszert választottam az alkalmazás megírásához ezen felül alaposabban bemutatni a működését és főbb tulajdonságait a \ref{fig.picture-2}-es ábra segítségével. 
 
 \subsection{Angular keretrendszer}
 
@@ -114,7 +114,7 @@ A fejezet további részében szeretném ismertetni a fentebb felsorolt technol�
 	\label{fig.picture-3}
 \end{figure}
 
-A webáruház back-end megírásánál 14.15.4-es verziójú Node.js szoftverrendszert használtam. A 3.2-es ábrán látható a Node.js bemutatása, ami összefoglalja a szoftverrendszer fontosabb jellemzőit. Az illusztráció első dobozában olvasható miszerint a Node.js skálázható webszerverek létrehozására alkalmas más szóval egy olyan rendszert tudunk létrehozni a támogatásával, ami több felhasználót képes egyidejűleg kiszolgálni. Ezenfelül JavaScript nyelv segítségével olyan programok írhatóak, amely a komponensek közötti esemény interakciókat tekinti alapul, mászóval eseményvezérelt programok megírására alkalmas (ilyen például egy egérkattintás vagy billentyű leütés). Folytatólag a Node.js aszinkron tulajdonságával lehetővé teszi, hogy a kliensoldalról érkező kérések várakozási sorrendbe kerüljenek, ennek következtében a kliensoldal tovább folytathatja a feladatát. 
+A webáruház back-end megírásánál 14.15.4-es verziójú Node.js szoftverrendszert használtam. A \ref{fig.picture-3}-as ábrán látható a Node.js bemutatása, ami összefoglalja a szoftverrendszer fontosabb jellemzőit. Az illusztráció első dobozában olvasható miszerint a Node.js skálázható webszerverek létrehozására alkalmas más szóval egy olyan rendszert tudunk létrehozni a támogatásával, ami több felhasználót képes egyidejűleg kiszolgálni. Ezenfelül JavaScript nyelv segítségével olyan programok írhatóak, amely a komponensek közötti esemény interakciókat tekinti alapul, mászóval eseményvezérelt programok megírására alkalmas (ilyen például egy egérkattintás vagy billentyű leütés). Folytatólag a Node.js aszinkron tulajdonságával lehetővé teszi, hogy a kliensoldalról érkező kérések várakozási sorrendbe kerüljenek, ennek következtében a kliensoldal tovább folytathatja a feladatát. 
 
 \subsection{Express.js framework és Mongoose programozási könyvtár}
 
@@ -125,7 +125,7 @@ A webáruház back-end megírásánál 14.15.4-es verziójú Node.js szoftverren
 	\label{fig.picture-4}
 \end{figure}
 
-A szerveroldal áttekinthetőbb és olvashatóbb kódírása érdekében a webáruház fejlesztése során az Express.js 4.17.1-es verzióját használtam. Az Express egy webes keretrendszer a Node.js nehézség nélküli használatára lett fejlesztve. A 3.3-as ábrán látható az Express attribútumainak ismertetése. Az illusztráción felvetettem, hogy az Express egy Middleware-típusú rendszer következésképpen lehetővé teszi a MongoDB adatbázis szoftverhez való zavartalan kapcsolódást a Mongoose 6.0.12 verziójával kiegészítve, ami egy JavaScript-ben írt objektum-orientált programozási könyvtár.
+A szerveroldal áttekinthetőbb és olvashatóbb kódírása érdekében a webáruház fejlesztése során az Express.js 4.17.1-es verzióját használtam. Az Express egy webes keretrendszer a Node.js nehézség nélküli használatára lett fejlesztve. A \ref{fig.picture-4}-es ábrán látható az Express attribútumainak ismertetése. Az illusztráción felvetettem, hogy az Express egy Middleware-típusú rendszer következésképpen lehetővé teszi a MongoDB adatbázis szoftverhez való zavartalan kapcsolódást a Mongoose 6.0.12 verziójával kiegészítve, ami egy JavaScript-ben írt objektum-orientált programozási könyvtár.
 
 \subsection{MongoDB adatbázisszerver}
 
@@ -136,7 +136,7 @@ A szerveroldal áttekinthetőbb és olvashatóbb kódírása érdekében a webá
 	\label{fig.picture-5}
 \end{figure}
 
-A MongoDB egy nyílt forráskódú, NoSQL adatbázisszerverek közé sorolt szoftver. A NoSQL magyarán Nem SQL típusú adatbázisrendszert jelent. Jellemzően nem rekordokat és táblázatokat tárolnak mint az SQL típusú szerverek, hanem független dokumentumokat és gyűjteményeket archiválnak. Személyes véleményem szerint a 3.4-es illusztrációval alátámasztva egyik legfőbb pozitív tulajdonságának éreztem a alkalmazás írása során, hogy az adatok JSON formátumban képes tárolni. Következésképpen a request és response folyamatok egyszerűsített és gyors működését képes biztosítani, mindeközben lehetővé teszi a kliensoldalon megjelenítendő információk könnyebb feldolgozását. 
+A MongoDB egy nyílt forráskódú, NoSQL adatbázisszerverek közé sorolt szoftver. A NoSQL magyarán Nem SQL típusú adatbázisrendszert jelent. Jellemzően nem rekordokat és táblázatokat tárolnak mint az SQL típusú szerverek, hanem független dokumentumokat és gyűjteményeket archiválnak. Személyes véleményem szerint a \ref{fig.picture-5}-ös illusztrációval alátámasztva egyik legfőbb pozitív tulajdonságának éreztem a alkalmazás írása során, hogy az adatok JSON formátumban képes tárolni. Következésképpen a request és response folyamatok egyszerűsített és gyors működését képes biztosítani, mindeközben lehetővé teszi a kliensoldalon megjelenítendő információk könnyebb feldolgozását. 
 \bigskip
 
 \subsection{NoSQL vs SQL adatbázisok összehasonlítása}
@@ -150,7 +150,7 @@ A következő grafikai ábrán szándékozom röviden bemutatni és összehasonl
 	\label{fig.picture-6}
 \end{figure}
 
-Mint a 3.5-ös ábrán megfigyelhető szempontok szerint egy webáruházban kezelt adatok tárolására a No SQL adatbázisok is kifejezetten alkalmasok. A NoSQL adatbázisszerverek jellemző tulajdonságai kulcsfontosságú szempontokkal szolgált a webáruház adatbázisának kiválasztásánál.
+Mint a \ref{fig.picture-6}-os ábrán megfigyelhető szempontok szerint egy webáruházban kezelt adatok tárolására a No SQL adatbázisok is kifejezetten alkalmasok. A NoSQL adatbázisszerverek jellemző tulajdonságai kulcsfontosságú szempontokkal szolgált a webáruház adatbázisának kiválasztásánál.
 
 \section{Szerveroldal működése}
 
@@ -161,14 +161,14 @@ Ebben a fejezetben részletesen prezentálom az alkalmazás szerveroldali műkö
 A webáruház megírása során RESTful API-t (feloldva: Representational State Transfer Application programming interface) magyarán reprezentáción alapuló állapotátvitel nevezetű architekturális módszert használtam. Az API-k segítségével a felhasználó számára elérhető a weboldalon számos interakció. Ilyen interakciónak számít például a bejelentkező felület.
 
 \bigskip
-Az alábbi illusztráción szeretném bemutatni az alkalmazásban használt REST API hívásokat, ennek okán a 3.6-os ábrán láthatók a programban megírt végpontok.
+Az alábbi illusztráción szeretném bemutatni az alkalmazásban használt REST API hívásokat, ennek okán a \ref{fig.picture-7}-es ábrán láthatók a programban megírt végpontok.
 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1.0\textwidth,height=220px]{images/restapi_bemutatasa.png}
 	\caption{Adatkezelés}
-	\label{fig.picture-8}
+	\label{fig.picture-7}
 \end{figure}
 
  A grafikán megfigyelhető hét különböző végpont ami az auth, hírek, termékek, termékcsoportok, üzenetek, chatek és rendeléseket fejezi ki. Az illusztrációt figyelemmel kísérve identifikálható, hogy nem minden végpont rendelkezik ugyan azokkal a kérésekkel. Szemléltetésképp vegyük figyelembe a hírekhez vonatkozó responsokat amik a GET, POST, PATCH és DELETE függvények, ezzel szemben a auth-hoz kizárólag POST függvény tartozik. Ennek kifejezetten egy oka van, mégpedig az, hogy a webáruház egyes adatait nem szükséges módosítani tudni kliens oldalról.
@@ -180,10 +180,10 @@ A REST API-t megismerve és ezt az információt felhasználva szemléltethető 
 	\centering
 	\includegraphics[width=1.0\textwidth,height=220px]{images/kapcsolat_szerver_bemutatas.png}
 	\caption{Kapcsolat a szerverrel}
-	\label{fig.picture-7}
+	\label{fig.picture-8}
 \end{figure}
 
-A fenti 3.7-es ábrával és az alább található alkalmazásban szereplő kódsorok segítségével szeretném bemutatni, hogy a felhasználó által indított kérés milyen sorrendben jut el az adatbázishoz és miképpen tér vissza hozzá.
+A fenti \ref{fig.picture-8}-as ábrával és az alább található alkalmazásban szereplő kódsorok segítségével szeretném bemutatni, hogy a felhasználó által indított kérés milyen sorrendben jut el az adatbázishoz és miképpen tér vissza hozzá.
 
 \bigskip
 Felhasználó interakcióba lép a felülettel (például: egy gombra kattintva~\ref{src:html}-es forráskód), ennek következményeként meghívódik egy a gombhoz tartozó TypeScript nyelven írt függvény \ref{src:ts}-es forráskód.
@@ -294,7 +294,7 @@ A webalkalmazásban szereplő további REST API hívásokat tartalmazó példak�
 Az alkalmazás megírása során akaratlagosan egy olyan webáruház létrehozása volt a végcélom, ami időszerű adatok kezelését tudja biztosítani. Következésképpen egy olyan felület megvalósítása gyakorlatban is, amely nem igényel programozón keresztüli beavatkozást. Ennek okán a szakdolgozat tartalmaz egy adminisztrációs oldalt, amely biztosítja a webalkalmazásban dinamikusan megjelenő adatok aktualitását, továbbá a leadott rendelések vásárlók által elküldött üzenetek megjelenítésére is szolgál. Kifejezetten ennek a blokk védelmében került bele külön hitelesítési felület.
 
 \bigskip
-Az alább található 3.8-as grafikán ez az engedélyezési folyamat elméleti működése látható.
+Az alább található \ref{fig.picture-9}-es grafikán ez az engedélyezési folyamat elméleti működése látható.
  
 \begin{figure}[H]
 	\centering

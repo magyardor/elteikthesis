@@ -17,14 +17,14 @@ Egy hétköznapi felhasználó számára talán ez a legnagyobb kihívás a prog
 Mindkettő technikát részletes bemutatásra kerül a következő alfejezetekben.
 
 \subsection{Alkalmazás indítás böngészőből}
-Az első és legkönnyebben alkalmazható stratégia, hogy valamilyen előre telepített webböngésző (Chrome, Firefox, Opera..stb.) segítségével megnyitjuk az előre Amazon (AWS) szerverére telepített weboldalt. A felület ezen az url-címen érhető el: http://webbeauty.us-east-2.elasticbeanstalk.com
+Az első és legkönnyebben alkalmazható stratégia, hogy valamilyen előre telepített webböngésző (Chrome, Firefox, Opera..stb.) segítségével megnyitjuk az előre Amazon (AWS) szerverére telepített weboldalt. A felület ezen az URL-en (rövidítés feloldása: Uniform Resource Locator) érhető el: http://webbeauty.us-east-2.elasticbeanstalk.com
 
 \subsection{Alklamazás indítása saját gépről}
 Az előző  módszert azért neveztem könnyebben alkalmazhatónk, mert ha saját gépről szeretnénk indítani az alkalmazás nem csak le kell klónoznunk azt Github segítségével, hanem több különböző szoftvert kell telepítenünk mielőtt eltudnánk indítani magát a projektet. Magához a program fordításához szükségünk lesz a Node.js szoftverre, amely letölthető ingyenesen a nodejs.org eredeti honlapjáról. Továbbá még elengedhetetlen a gépünkről az Angular CLI. Ez egy parancssori interfész az Angular szoftverhez. Mivel a kód futtatásához szükségünk van rengetek eszközre, amely lefordítja és optimalizálja a kódot. A CLI ezt biztosítja a projekt számára. A kód fordításához szükségük lesz egy integrált fejlesztői környezetre. Én személy szerint a Visual Studio Code(rövidítve VS Code) nyílt forráskódú kódszerkesztőjét használtam az alkalmazás elkészítése során, így ezt fogom bemutatni. A következő felsorolásban összefoglalom azokat a lépéseket, amik segítségével eljutunk a program saját gépről való indítását. 
 
 \begin{enumerate}
 	\item\label{step:first} https://nodejs.org-ról töltsük le és telepítsük a számítógépre megfelelő .exe kiterjesztésű fájlt.
-	\item https://github.com/magyardor/szakdolgozat2021 url-címen elérhető GitHub repository-t klónozzuk le az eszközünkre
+	\item https://github.com/magyardor/szakdolgozat2021 webcímen elérhető GitHub repository-t klónozzuk le az eszközünkre
 	\item töltsük le, és telepítsük a Visual Studio Code nevezetű programot a https://code.visualstudio.com címről.
 	\item nyissuk meg a VS code alkalmazást és installáljuk a következő bővítményeket: Angular Essentials, Material Icon Theme
 	\item a VS code segítségével töltsük be a leklónozott projekt mappáját, és nyissuk meg egy új terminált
@@ -32,7 +32,7 @@ Az előző  módszert azért neveztem könnyebben alkalmazhatónk, mert ha sajá
 	\item ha ez sikeresen megtörtént akkor futtassuk le az npm i parancssort, melynek segítségével letöltődnek azok a szükséges fájlok, amik nem szerepelnek az Angular CLI interfészben, de használatban vannak 
 	\item mielőtt elindítanánk az alkalmazást be kell lépnünk a projekthez tartozó MongoDB adatbázisba és hozzá kell adnunk a hálózati hozzáférés nevezetű menüpont alatt a gépünk IP címét, különben nem tud csatlakozni a szerveroldalunk az alkalmazás által megjelenítendő adatokhoz
 	\item a meglévő terminálunk mellé nyissunk meg egy újat és futtassuk le az egyikbe az npm run start a másikba az npm run start:server parancsokat, az előbbi a kliensoldalt, míg az utóbbi a szerveroldali kódokat futtatja és fordítja le
-	\item ha sikeresen lefordult a kód, akkor a böngésző url helyére a localhost:4200 címet begépelve megkapjuk a webáruház oldalát
+	\item ha sikeresen lefordult a kód, akkor a böngésző URL helyére a localhost:4200 címet begépelve megkapjuk a webáruház oldalát
 \end{enumerate}
 
 
@@ -80,68 +80,77 @@ Az áruház szerkezeti felépítése három fő részből áll:
 \end{description}
 
 
-\subsection{Adminisztrációs felület kezelése} % Subfigures
+\subsection{Adminisztrációs felület kezelése}
+Az oldal eléréséhez szükség van a helyesen begépelt URL megadására a böngészőnkön keresztül, ami 
 
-In non ipsum fermentum urna feugiat rutrum a at odio. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla tincidunt mattis nisl id suscipit. Sed bibendum ac felis sed volutpat. Nam pharetra nisi nec facilisis faucibus. Aenean tristique nec libero non commodo. Nulla egestas laoreet tempus. Nunc eu aliquet nulla, quis vehicula dui. Proin ac risus sodales, gravida nisi vitae, efficitur neque, Figure~\ref{fig:example-2}:
+\begin{compactitem}
+	\item localhost esetén: http://localhost:4200/amdin/login
+	\item AWS szerverre telepített weboldal esetén: http://webeauty.us-east-2.elasticbeanstall.com/admin/login
+\end{compactitem}
 
+Ha helytelenül gépeljük be a megadott webcímet, akkor az alkalmazás visszanavigál minket az oldal kezdőlapjára, viszont ha sikeresen begépeltül az adminisztrációs felület eléréséhez szükséges URL, akkor a \ref{fig.exemple-5}-ös ábrán látott oldalt láthatjuk.
+	\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth,height=220px]{images/bejelentkezes.png}
+	\caption{Bejelentkezési oldal}
+	\label{fig.exemple-5}
+\end{figure}
+Az adminisztrációs felület kezeléséhez szükségünk van az oldalt védő autentikáció feloldásához. Ez azt jelenti, hogy először be kell lépnünk a fejlesztő által megadott vagy az üzemeltető által hozzáadott emailcím és jelszó párossal az előbb emlegetett címek valamelyikén. Sikeres bejelentkezéssel az oldal átnavigálásra kerül az admin felületre. Ez az oldal két főrészből áll: a vezérlési és maga a tartalmi részéből.
+\begin{description}
+	\item[Navigációs]felület, aminek segítségével jeleníthetjük meg az alkalmazás tartalmi részét. A \ref{fig.exemple-6}-os képen ez a navigációs rész a baloldalon található. Az admin felületen képesek vagyunk új termékeket vagy híreket hozzáadni és a meglévőket lista formájában megtekinteni. Továbbá a fentebbiekben már említett kapcsolat felvétel céljából a felhasználó által elküldött üzeneteket is kilistázásra kerülnek az oldalon. Az alkalmazáson belül lehetőségünk van új felhasználói fiókot hozzáadni, viszont ezeket a fiókokat adatvédelmi okokból nem megtekinthetőek és nem törölhetőek, csak adatbázis szinten. Ezen felül lehetőség van a bejelentkezett fiókot kijelentkeztetni, így visszalépve bejelentkezés hiányában nem tekinthetjük meg újból ezt a felület részt.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1.0\textwidth,height=300px]{images/admin.png}
+		\caption{Adminisztrációs felület megjelenése}
+		\label{fig.exemple-6}
+	\end{figure}
+	\item[Tartalmi]rész például a \ref{fig.exemple-6}-os ábra jobboldalán látott táblázat, ami a  termékek listáját tartalmazza. Az oldal ezen részén lehetőségünk van az adatok módosítására, törlésére vagy a fentebb említett termék hozzáadására a megjelenő form kitöltésével.
+\end{description}
+
+\section{Rendelési folyamat}
+A rendelés folyamata hasonlóan zajlik, mint a legtöbb webáruháznak a rendelése történik. A kiválasztott termékek bekerülnek a kosárba és személyes adatok megadásával és vásárlás befejezésével elküldésre kerül az oldal üzemeltető számára, aki előkészíti azt. A következő két alfejezetben bemutatom egy példán keresztül hogyan is kerül egy rendelés leadását a termék kiválasztásától kezdve és milyen feltételei, információ vonzatai vannak a webáruházon történő vásárlásnak.
+
+\subsection{Rendelés leadása}
+A rendelés leadásához először is szükséges, hogy valami bekerüljön a bevásárlókosár tartalmába. Termék kosárba helyezésére két lehetőségünk van. Az első, hogy ha a termékek listájánál a kiválasztott termék kártyáján a vásárlás gombra kattintunk, mint ahogy a \ref{fig.exemple-7}-es ábrán is megfigyelhető.
 \begin{figure}[H]
 	\centering
-	\subcaptionbox{Vestibulum quis mattis urna}{
-		\includegraphics[width=0.45\linewidth]{elte_cimer_szines}}
-	\hspace{5pt}
-	\subcaptionbox{Donec hendrerit quis dui sit amet venenatis}{
-		\includegraphics[width=0.45\linewidth]{elte_cimer_szines}}
-	\caption{Aenean porttitor mi volutpat massa gravida}
-	\label{fig:example-3}
+	\includegraphics[width=1.0\textwidth,height=360px]{images/termek_vasarlas_1.png}
+	\caption{Termék vásárlása első példa}
+	\label{fig.exemple-7}
 \end{figure}
 
-Nam et nunc eget elit tincidunt sollicitudin. Quisque ligula ipsum, tempor vitae tortor ut, commodo rhoncus diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Phasellus vehicula quam dui, eu convallis metus porta ac.
-
-
-\section{Rendelési folyamat} % Tables
-
-Nam magna ex, euismod nec interdum sed, sagittis nec leo. Nam blandit massa bibendum mattis tristique. Phasellus tortor ligula, sodales a consectetur vitae, placerat vitae dolor. Aenean consequat in quam ac mollis. 
-
-\begin{table}[H]
+A második lehetőségünk az áru bevásárlókocsiba helyezésére, hogy a kiválasztott termék profil oldalán kattintunk a vásárlás gombra. A különbség a két alternatíva között, hogy a második hozzáadás során megadhatjuk a vásárolandó áru számát. Ahogy azt a \ref{fig.exemple-8}-as második kép példáján is láthatjuk.
+\begin{figure}[H]
 	\centering
-	\begin{tabular}{ | m{0.25\textwidth} | m{0.65\textwidth} | }
-		\hline
-		\textbf{Phasellus tortor} & \textbf{Aenean consequat} \\
-		\hline \hline
-		\emph{Sed malesuada} & Aliquam aliquam velit in convallis ultrices. \\
-		\hline
-		\emph{Purus sagittis} &  Quisque lobortis eros vitae urna lacinia euismod. \\
-		\hline
-		\emph{Pellentesque} & Curabitur ac lacus pellentesque, eleifend sem ut, placerat enim. Ut auctor tempor odio ut dapibus. \\
-		\hline
-	\end{tabular}
-	\caption{Maecenas tincidunt non justo quis accumsan}
-	\label{tab:example-1}
-\end{table}
+	\includegraphics[width=1.0\textwidth,height=350px]{images/termek_vasarlas_2.png}
+	\caption{Termék vásárlása második példa}
+	\label{fig.exemple-8}
+\end{figure}
 
-\subsection{Vásárlással kapcsolatos információk} % Multi rows and multi columns
-
-Mauris a dapibus lectus. Vestibulum commodo nibh ante, ut maximus magna eleifend vel. Integer vehicula elit non lacus lacinia, vitae porttitor dolor ultrices. Vivamus gravida faucibus efficitur. Ut non erat quis arcu vehicula lacinia. Nulla felis mauris, laoreet sed malesuada in, euismod et lacus. Aenean at finibus ipsum. Pellentesque dignissim elit sit amet lacus congue vulputate.
-
-\begin{table}[htb]
+Ha a kiválasztott termékek a kosárba kerültek, azokat megtekinthetjük úgy, hogy ha a \ref{fig.exemple-7}-es és a \ref{fig.exemple-8}-as ábrákon is látott Kosár megtekintése gombot kiválasztjuk, vagy ha magára a bevásárlókocsi ikonjára kattintunk. Mindkettő lehetőséggel átirányít a kosár oldalára, ahol láthatjuk táblázat formájában a megvásárolandó árukat. Mint azt a \ref{fig.exemple-9}-es képen is láthatjuk.
+\begin{figure}[H]
 	\centering
-	\begin{tabular}{ | c | r | r | r | r | r | r | }
-		\hline
-		\multirow{2}{*}{\textbf{Quisque}} & \multicolumn{2}{ c | }{\textbf{Suspendisse}} & \multicolumn{2}{ c | }{\textbf{Aliquam}} & \multicolumn{2}{ c | }{\textbf{Vivamus}} \\
-		\cline{2-7}
-		& Proin & Nunc & Proin & Nunc & Proin & Nunc \\
-		\hline \hline		
-		Leo & 2,80 MB & 100\% & 232 KB & 8,09\% & 248 KB & 8,64\% \\
-		\hline
-		Vel & 9,60 MB & 100\% & 564 KB & 5,74\% & 292 KB & 2,97\% \\
-		\hline
-		Auge & 78,2 MB & 100\% & 52,3 MB & 66,88\% & 3,22 MB & 4,12\% \\
-		\hline 
-	\end{tabular}
-	\caption[Rövid cím a táblázatjegyzékbe]{Vivamus ac arcu fringilla, fermentum neque sed, interdum erat. Mauris bibendum mauris vitae enim mollis, et eleifend turpis aliquet.}
-	\label{tab:example-2}
-\end{table}
+	\includegraphics[width=1.0\textwidth,height=350px]{images/kosar.png}
+	\caption{Bevárásló kosár}
+	\label{fig.exemple-9}
+\end{figure}
 
-\subsection{Rendelés leadása} % Long tables over multiple pages
+A bevásárlókosár tartalmának módosításra lehetőségünk van a mennyiség oszlopában látható gombok segítségével. Ha csökkentjük vagy növeljük egy áru darab mennyiségét, akkor azok az adatok, amiket ez befolyásolja dinamikusan változnak.
 
-Nunc porta placerat leo, sit amet porttitor dui porta molestie. Aliquam at fermentum mi. Maecenas vitae lorem at leo tincidunt volutpat at nec tortor. Vivamus semper lacus eu diam laoreet congue. Vivamus in ipsum risus. Nulla ullamcorper finibus mauris non aliquet. Vivamus elementum rhoncus ex ut porttitor.
+\bigskip
+A táblázat alatti Vásárlás gombot kiválasztva az oldal átnavigál a fizetési felületre. Az alábbi \ref{fig.exemple-10}-es képeken látható, hogy ezen a felületen négy stepper button magyarul lépegető gomb található. Minden lépegetőnek külön funkciója van, amit a nevével azonosíthatunk.
+\begin{figure}[H]
+	\centering
+	\subcaptionbox{Első stepper button}{
+		\includegraphics[width=0.45\linewidth]{images/fizetes_1.png}}
+	\hspace{5pt}
+	\subcaptionbox{Második stepper button}{
+		\includegraphics[width=0.45\linewidth]{images/fizetes_2.png}}
+	\caption{Fizetési felület}
+	\label{fig.exemple-10}
+\end{figure}
+
+Az első ilyen gombon adhatóak meg a szállítás és számlázási adatokkal kapcsolatos űrlap, aminek a helyes kitöltésével léphetünk a következő lépésre. A második stepper gombon a szállítással és fizetéssel kapcsolatos információkat adhatjuk meg. A további lépegetőkön egy összefoglalót és visszajelzést kapunk a leadott rendeléssel kapcsolatban.
+
+\subsection{Vásárlással kapcsolatos információk}
+A vásárlással kapcsolatban 
